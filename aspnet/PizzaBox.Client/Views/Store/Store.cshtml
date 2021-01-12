@@ -1,0 +1,12 @@
+@model PizzaBox.Client.Models.StoreViewModel
+<div class="text-center">
+  <h1 class="display-4">StoreView</h1>
+  @{
+    foreach (var store in Model.Stores)
+    {
+      <li>
+        @store
+      </li>
+    }
+  }
+</div>
