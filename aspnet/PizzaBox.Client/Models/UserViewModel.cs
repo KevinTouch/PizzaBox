@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Configuration;
+using PizzaBox.Storing;
 
 namespace PizzaBox.Client.Models
 {
@@ -6,11 +7,10 @@ namespace PizzaBox.Client.Models
   {
     public string Name { get; set; }
     public OrderViewModel Order { get; set; }
-
-    public UserViewModel(IConfiguration configuration)
+    public UserViewModel()
     {
       Name = "fred";
-      Order = new OrderViewModel(configuration);
+      Order = new OrderViewModel();
     }
   }
 }

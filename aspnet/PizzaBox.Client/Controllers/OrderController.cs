@@ -1,22 +1,39 @@
+using System;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using PizzaBox.Client.Models;
+using PizzaBox.Domain.Models;
+using PizzaBox.Storing;
 
 namespace PizzaBox.Client.Controllers
 {
-  public class HelloWorldController : Controller
+  public class OrderController : Controller
   {
-    //
-    // GET: /HelloWorld/
-    public string Index()
+    private readonly PizzaBoxContext _ctx;
+    public OrderController(PizzaBoxContext context)
     {
-      return "This is my default action...";
+      _ctx = context;
     }
 
-    //
-    // GET: /HelloWorld/Welcome/
-
-    public string Welcome()
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult Post(OrderViewModel model)
     {
-      return "This is the Welcome action method...";
+      if (ModelState.IsValid)
+      {
+        var order = new Order()
+        {
+          DateModified = DateTime.Now,
+          Store = _ctx.Stores.FirstOrDefault(s => s.Name == model.Store)
+        };
+
+        _ctx.Orders.Add(order);
+        _ctx.SaveChanges();
+
+        return View("OrderPlaced");
+      }
+
+      return View("home", model);
     }
   }
 }
