@@ -1,10 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -58,16 +53,18 @@ namespace PizzaBox.Client
         // - Requires more input to specify a route. The conventional default handles
         // routes more succinctly. However, attribute routing allows and requires precise
         // control of which route templates apply to each action
-        // endpoints.MapControllers();
+        endpoints.MapControllers();
 
         // Conventional Routing
         // - Establishes a convention for URL paths
         // - Using conventional routing with the default route allows creating
         // the app without having to come up with a new URL pattern for each action.
 
-        endpoints.MapControllerRoute(
-            name: "default",
-            pattern: "{controller=Home}/{action=Index}/{id?}");
+        // endpoints.MapControllerRoute(
+        //     name: "default",
+        //     pattern: "{controller=Home}/{action=Index}/{id?}"
+        // );
+
       });
     }
   }

@@ -12,17 +12,21 @@ namespace PizzaBox.Client.Controllers
       _ctx = context;
     }
 
-    [HttpGet]
-    public IActionResult Home()
+    // [HttpGet]
+    // public IActionResult Home()
+    // {
+    //   // var customer = new UserViewModel();
+    //   // customer.Order = new OrderViewModel()
+    //   // {
+    //   //   Stores = _ctx.GetStores()
+    //   // };
+    //   // return View("home", customer);
+    //   return null;
+    // }
+    [HttpPost]
+    public IActionResult PostOrder()
     {
-      var customer = new UserViewModel();
-
-      customer.Order = new OrderViewModel()
-      {
-        Stores = _ctx.GetStores()
-      };
-
-      return View("home", customer);
+      return null;
     }
   }
 }

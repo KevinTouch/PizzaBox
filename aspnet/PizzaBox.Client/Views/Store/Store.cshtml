@@ -1,12 +1,16 @@
 @model PizzaBox.Client.Models.StoreViewModel
+
 <div class="text-center">
-  <h1 class="display-4">StoreView</h1>
-  @{
-    foreach (var store in Model.Stores)
-    {
-      <li>
-        @store
-      </li>
+  <h1 class="display-4">List of Stores</h1>
+  <p>Select a store to order from: </p>
+  <ul>
+    @{
+      foreach (var store in Model.Stores)
+      {
+        <li>
+          <a href="/Order/@store">@store</a>
+        </li>
+      }
     }
-  }
+  </ul>
 </div>

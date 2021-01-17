@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using PizzaBox.Client.Models;
@@ -7,6 +8,7 @@ using PizzaBox.Storing;
 
 namespace PizzaBox.Client.Controllers
 {
+  [Route("[controller]")]
   public class OrderController : Controller
   {
     private readonly PizzaBoxContext _ctx;
@@ -15,25 +17,45 @@ namespace PizzaBox.Client.Controllers
       _ctx = context;
     }
 
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public IActionResult Post(OrderViewModel model)
+    [HttpGet("{store}")] // GET /Store
+    public IActionResult ReadOrder(string store)
     {
-      if (ModelState.IsValid)
+      OrderViewModel model = new OrderViewModel();
+      model.StoreItems = new List<String>() { "MeatEater", "Vegan", "Custom" };
+      if (store == "PizzaHat")
       {
-        var order = new Order()
-        {
-          DateModified = DateTime.Now,
-          Store = _ctx.Stores.FirstOrDefault(s => s.Name == model.Store)
-        };
-
-        _ctx.Orders.Add(order);
-        _ctx.SaveChanges();
-
-        return View("OrderPlaced");
+        ViewData["Store"] = "PizzaHut";
       }
-
-      return View("home", model);
+      else if (store == "Cominos")
+      {
+        ViewData["Store"] = "Cominos";
+      }
+      else
+      {
+        ViewData["Store"] = "nothing";
+      }
+      return View("Order", model);
     }
+
+    // [HttpPost]
+    // [ValidateAntiForgeryToken]
+    // public IActionResult Post(OrderViewModel model)
+    // {
+    //   if (ModelState.IsValid)
+    //   {
+    //     var order = new Order()
+    //     {
+    //       DateModified = DateTime.Now,
+    //       Store = _ctx.Stores.FirstOrDefault(s => s.Name == model.Store)
+    //     };
+
+    //     _ctx.Orders.Add(order);
+    //     _ctx.SaveChanges();
+
+    //     return View("OrderPlaced");
+    //   }
+
+    //   return View("home", model);
+    // }
   }
 }

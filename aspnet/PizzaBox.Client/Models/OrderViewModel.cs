@@ -9,7 +9,7 @@ namespace PizzaBox.Client.Models
 {
   public class OrderViewModel
   {
-    public List<string> Stores { get; set; }
+    public List<string> StoreItems { get; set; }
 
     [Required]
     public string Store { get; set; }
