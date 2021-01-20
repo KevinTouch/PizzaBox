@@ -1,0 +1,28 @@
+@model PizzaBox.Client.Models.StoreViewModel
+
+<div class="text-center">
+  <h1 class="display-4">List of Stores (Admin)</h1>
+  <p>View Order History from: </p>
+  <ul>
+    @{
+      foreach (var store in ViewData["Stores"] as List<string>)
+      {
+        <li>
+          <a href="/Store/Admin/OrderHistory/@store">@store</a>
+        </li>
+      }
+    }
+  </ul>
+
+  @* <p>View Order Sale from: </p> *@
+  @* <ul> *@
+  @* @{ *@
+  @* foreach (var store in ViewData["Stores"] as List<string>) *@
+  @* { *@
+  @* <li> *@
+  @* <a href="/Store/Admin/OrderSale/@store">@store</a> *@
+  @* </li> *@
+  @* } *@
+  @* } *@
+  @* </ul> *@
+</div>

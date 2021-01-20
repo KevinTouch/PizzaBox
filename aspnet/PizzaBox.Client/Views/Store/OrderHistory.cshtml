@@ -1,0 +1,28 @@
+@model PizzaBox.Client.Models.StoreViewModel
+
+<div class="text-center">
+  <h1 class="display-4">Order History from @Model.StoreName</h1>
+  <table class="table">
+    <thead>
+      <tr>
+        <td>User Id</td>
+        <td>Order Id</td>
+        <td>Order Time</td>
+      </tr>
+    </thead>
+    <tbody>
+      @foreach (var users in Model.Users)
+      {
+        <tr>
+          <td>@users.EntityId</td>
+          @foreach (var order in users.Orders)
+          {
+            <td>@order.EntityId</td>
+            <td>@order.OrderTime</td>
+          }
+        </tr>
+      }
+    </tbody>
+  </table>
+  <a asp-controller="Home" asp-action="Index">Go Back Home</a>
+</div>

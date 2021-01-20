@@ -23,7 +23,6 @@ namespace PizzaBox.Client.Controllers
       _size = _ctx.ReadSizes().ToList();
       _crust = _ctx.ReadCrusts().ToList();
       _listOfToppings = _ctx.GetToppings().ToList();
-
     }
 
     [HttpPost]
