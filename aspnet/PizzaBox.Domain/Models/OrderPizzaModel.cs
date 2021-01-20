@@ -8,6 +8,6 @@ namespace PizzaBox.Domain.Abstracts
     public string Size { get; set; }
     public string Crust { get; set; }
     public List<string> ToppingList { get; set; }
-    public double Cost { get; set; }
+    public decimal Cost { get; set; }
   }
 }

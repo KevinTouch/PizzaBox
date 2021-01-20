@@ -19,26 +19,22 @@
         <label asp-for="Size">@item</label>
       }
     </div>
-
-    @if (Model.Pizza != "Custom Pizza")
-    {
-      <div>
-        <span>Crusts: </span>
-        @foreach (var item in Model.Crusts)
-        {
-          <input asp-for="Crust" type="radio" value="@item">
-          <label asp-for="Crust">@item</label>
-        }
-      </div>
-      <div>
-        <span>Toppings: </span>
-        @foreach (var item in Model.ToppingsShown)
-        {
-          <input name="ToppingsPicked" type="checkbox" value="@item">
-          <label name="ToppingsPicked">@item</label>
-        }
-      </div>
-    }
+    <div>
+      <span>Crusts: </span>
+      @foreach (var item in Model.Crusts)
+      {
+        <input asp-for="Crust" type="radio" value="@item">
+        <label asp-for="Crust">@item</label>
+      }
+    </div>
+    <div>
+      <span>Toppings: </span>
+      @foreach (var item in Model.ToppingsShown)
+      {
+        <input name="ToppingsPicked" type="checkbox" value="@item">
+        <label name="ToppingsPicked">@item</label>
+      }
+    </div>
     <button type="submit" class="btn btn-primary" style="margin-bottom: 10px;">Add to Pizza to Order</button>
   </form>
 
@@ -86,6 +82,9 @@
         }
       </tbody>
     </table>
+
+  <form asp-controller="User" asp-action="CheckoutOrder" asp-route-storeName="@Model.Store" asp-method="POST">
     <button type="submit" class="btn btn-secondary">Checkout Order</button>
+  </form>
   }
 </div>

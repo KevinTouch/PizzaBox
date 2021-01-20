@@ -4,6 +4,7 @@ using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using PizzaBox.Client.Models;
 using PizzaBox.Domain.Abstracts;
+using PizzaBox.Domain.Models;
 using PizzaBox.Storing;
 
 namespace PizzaBox.Client.Controllers
@@ -43,14 +44,26 @@ namespace PizzaBox.Client.Controllers
       model.StoreItems.Add("Custom Pizza");
       model.Store = storeName;
 
+      decimal sizePrice = _ctx.GetSizes().FirstOrDefault(s => s.Name == model.Size).Pricing;
+      decimal crustPrice = 0;
+      decimal toppingPrice = 0;
+      if (model.Pizza == "Custom Pizza")
+      {
+        crustPrice = _ctx.GetCrusts().FirstOrDefault(c => c.Name == model.Crust).Pricing;
+        foreach (var topping in model.ToppingsPicked)
+        {
+          toppingPrice += _ctx.GetToppings().FirstOrDefault(t => t.Name == topping).Pricing;
+        }
+      }
+
       model.Crusts = _ctx.GetCrusts().Select(x => x.ToString()).ToList();
       model.Sizes = _ctx.GetSizes().Select(x => x.ToString()).ToList();
       model.ToppingsShown = _ctx.GetToppings().Select(x => x.ToString()).ToList();
 
-      // given pizzaName -> calculate cost
-      // given crust -> Cost
-      // given
-
+      if (model.ToppingsPicked == null)
+      {
+        model.ToppingsPicked = new List<string>();
+      }
 
       var pizza = new OrderPizzaModel
       {
@@ -58,7 +71,7 @@ namespace PizzaBox.Client.Controllers
         Crust = model.Crust,
         Size = model.Size,
         ToppingList = model.ToppingsPicked,
-        Cost = 12.34
+        Cost = crustPrice + sizePrice + toppingPrice
       };
 
       if (TempData["pizzas"] == null)

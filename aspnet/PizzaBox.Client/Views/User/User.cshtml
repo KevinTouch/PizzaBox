@@ -1,0 +1,49 @@
+@model PizzaBox.Client.Models.UserViewModel
+
+<div class="text-center">
+  <h1 class="display-5">User Page</h1>
+  <table class="table" class="mt-2">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Size</th>
+        <th>Crust</th>
+        <th>Topping1</th>
+        <th>Topping2</th>
+        <th>Topping3</th>
+        <th>Topping4</th>
+        <th>Topping5</th>
+        <th>Cost</th>
+      </tr>
+    </thead>
+
+    <tbody>
+     @foreach (var pizza in Model.Order.Pizzas)
+     {
+     <tr>
+       <td>@pizza.Name</td>
+       <td>@pizza.Size</td>
+       <td> @pizza.Crust</td>
+       @if(pizza.ToppingList != null){
+       var i = 0;
+       @foreach (var topping in pizza.ToppingList)
+       {
+       i++;
+       <td>@topping</td>
+       }
+       @for(; i < 5; ++i){
+       <td></td>
+       }
+       } else {
+       @for(var i = 0; i < 5; ++i){
+       <td></td>
+       }
+       }
+       <td>$@pizza.Cost</td>
+       </tr>
+      }
+     </tbody>
+  </table>
+  <h1 class="display-4">Total Cost: $@Model.Order.TotalCost</h1>
+  <a asp-controller="Home" asp-action="Index">Go Back Home</a>
+</div>

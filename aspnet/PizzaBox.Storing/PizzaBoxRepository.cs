@@ -13,6 +13,31 @@ namespace PizzaBox.Storing
       _ctx = context;
     }
 
+    public void AddUser(User user)
+    {
+      _ctx.Add(user);
+    }
+
+    public void Save()
+    {
+      _ctx.SaveChanges();
+    }
+
+    public IEnumerable<Store> ReadStores()
+    {
+      return _ctx.Stores;
+    }
+
+    public IEnumerable<Size> ReadSizes()
+    {
+      return _ctx.Sizes;
+    }
+
+    public IEnumerable<Crust> ReadCrusts()
+    {
+      return _ctx.Crusts;
+    }
+
     public List<string> GetStores()
     {
       return _ctx.Stores.Select(s => s.Name).ToList();

@@ -9,8 +9,6 @@ namespace PizzaBox.Client.Models
     public OrderViewModel Order { get; set; }
     public UserViewModel()
     {
-      Name = "fred";
-      Order = new OrderViewModel();
     }
   }
 }
