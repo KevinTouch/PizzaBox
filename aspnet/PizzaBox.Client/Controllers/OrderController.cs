@@ -4,7 +4,6 @@ using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using PizzaBox.Client.Models;
 using PizzaBox.Domain.Abstracts;
-using PizzaBox.Domain.Models;
 using PizzaBox.Storing;
 
 namespace PizzaBox.Client.Controllers
@@ -47,6 +46,12 @@ namespace PizzaBox.Client.Controllers
       decimal sizePrice = _ctx.GetSizes().FirstOrDefault(s => s.Name == model.Size).Pricing;
       decimal crustPrice = 0;
       decimal toppingPrice = 0;
+
+      if (model.ToppingsPicked == null)
+      {
+        model.ToppingsPicked = new List<string>();
+      }
+
       if (model.Pizza == "Custom Pizza")
       {
         crustPrice = _ctx.GetCrusts().FirstOrDefault(c => c.Name == model.Crust).Pricing;
@@ -55,15 +60,34 @@ namespace PizzaBox.Client.Controllers
           toppingPrice += _ctx.GetToppings().FirstOrDefault(t => t.Name == topping).Pricing;
         }
       }
+      else if (model.Pizza == "MeatEaters Pizza")
+      {
+        model.Crust = "Regular";
+        model.ToppingsPicked.Add("Pepperoni");
+        model.ToppingsPicked.Add("Italian Sausage");
+        model.ToppingsPicked.Add("Meatball");
+
+      }
+      else if (model.Pizza == "Vegan Pizza")
+      {
+        model.Crust = "Regular";
+        model.ToppingsPicked.Add("Mushroom");
+        model.ToppingsPicked.Add("Red Onions");
+        model.ToppingsPicked.Add("Black Olives");
+        model.ToppingsPicked.Add("Green Bell Peppers");
+      }
+      else if (model.Pizza == "Supreme Pizza")
+      {
+        model.Crust = "Regular";
+        model.ToppingsPicked.Add("Pepperoni");
+        model.ToppingsPicked.Add("Mushroom");
+        model.ToppingsPicked.Add("Red Onions");
+        model.ToppingsPicked.Add("Green Bell Peppers");
+      }
 
       model.Crusts = _ctx.GetCrusts().Select(x => x.ToString()).ToList();
       model.Sizes = _ctx.GetSizes().Select(x => x.ToString()).ToList();
       model.ToppingsShown = _ctx.GetToppings().Select(x => x.ToString()).ToList();
-
-      if (model.ToppingsPicked == null)
-      {
-        model.ToppingsPicked = new List<string>();
-      }
 
       var pizza = new OrderPizzaModel
       {

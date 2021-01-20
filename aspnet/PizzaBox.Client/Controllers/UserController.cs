@@ -12,7 +12,6 @@ namespace PizzaBox.Client.Controllers
   public class UserController : Controller
   {
     private readonly PizzaBoxRepository _ctx;
-    private static List<Menu> _menuItems;
     private static List<Store> _stores;
     private static List<Size> _size;
     private static List<Crust> _crust;
