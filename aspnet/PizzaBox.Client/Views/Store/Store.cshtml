@@ -5,7 +5,7 @@
   <p>Select a store to order from: </p>
   <ul>
     @{
-      foreach (var store in Model.Stores)
+      foreach (var store in ViewData["Stores"] as List<string>)
       {
         <li>
           <a href="/Order/@store">@store</a>

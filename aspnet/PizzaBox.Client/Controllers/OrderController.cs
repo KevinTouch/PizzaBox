@@ -1,61 +1,77 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using PizzaBox.Client.Models;
-using PizzaBox.Domain.Models;
+using PizzaBox.Domain.Abstracts;
 using PizzaBox.Storing;
 
 namespace PizzaBox.Client.Controllers
 {
-  [Route("[controller]")]
   public class OrderController : Controller
   {
-    private readonly PizzaBoxContext _ctx;
-    public OrderController(PizzaBoxContext context)
+    private readonly PizzaBoxRepository _ctx;
+
+    public OrderController(PizzaBoxRepository context)
     {
       _ctx = context;
     }
 
-    [HttpGet("{store}")] // GET /Store
-    public IActionResult ReadOrder(string store)
+    [Route("Order/{storeName}")]
+    [HttpGet] // GET /Order/PizzaHut
+    public IActionResult StartOrder(string storeName)
     {
       OrderViewModel model = new OrderViewModel();
-      model.StoreItems = new List<String>() { "MeatEater", "Vegan", "Custom" };
-      if (store == "PizzaHat")
-      {
-        ViewData["Store"] = "PizzaHut";
-      }
-      else if (store == "Cominos")
-      {
-        ViewData["Store"] = "Cominos";
-      }
-      else
-      {
-        ViewData["Store"] = "nothing";
-      }
+      var menu = _ctx.GetMenuItems(storeName);
+      model.StoreItems = menu.Select(x => x.ToString()).ToList();
+      model.StoreItems.Add("Custom Pizza");
+      model.Store = storeName;
+      model.Crusts = _ctx.GetCrusts().Select(x => x.ToString()).ToList();
+      model.Sizes = _ctx.GetSizes().Select(x => x.ToString()).ToList();
+      model.ToppingsShown = _ctx.GetToppings().Select(x => x.ToString()).ToList();
+      model.ToppingsPicked = new List<string>();
+      TempData["pizzas"] = null;
       return View("Order", model);
     }
 
-    // [HttpPost]
-    // [ValidateAntiForgeryToken]
-    // public IActionResult Post(OrderViewModel model)
-    // {
-    //   if (ModelState.IsValid)
-    //   {
-    //     var order = new Order()
-    //     {
-    //       DateModified = DateTime.Now,
-    //       Store = _ctx.Stores.FirstOrDefault(s => s.Name == model.Store)
-    //     };
+    [Route("Order/{storeName}")]
+    [HttpPost] // POST /Order/PizzaHut
+    public IActionResult NewOrder(string storeName, OrderViewModel model)
+    {
+      var menu = _ctx.GetMenuItems(storeName);
+      model.StoreItems = menu.Select(x => x.ToString()).ToList();
+      model.StoreItems.Add("Custom Pizza");
+      model.Store = storeName;
 
-    //     _ctx.Orders.Add(order);
-    //     _ctx.SaveChanges();
+      model.Crusts = _ctx.GetCrusts().Select(x => x.ToString()).ToList();
+      model.Sizes = _ctx.GetSizes().Select(x => x.ToString()).ToList();
+      model.ToppingsShown = _ctx.GetToppings().Select(x => x.ToString()).ToList();
 
-    //     return View("OrderPlaced");
-    //   }
+      // given pizzaName -> calculate cost
+      // given crust -> Cost
+      // given
 
-    //   return View("home", model);
-    // }
+
+      var pizza = new OrderPizzaModel
+      {
+        Name = model.Pizza,
+        Crust = model.Crust,
+        Size = model.Size,
+        ToppingList = model.ToppingsPicked,
+        Cost = 12.34
+      };
+
+      if (TempData["pizzas"] == null)
+      {
+        model.Pizzas = new List<OrderPizzaModel>();
+      }
+      else
+      {
+        model.Pizzas = JsonSerializer.Deserialize<List<OrderPizzaModel>>((string)TempData["pizzas"]);
+      }
+      model.Pizzas.Add(pizza);
+      TempData["pizzas"] = JsonSerializer.Serialize(model.Pizzas);
+      return View("Order", model);
+    }
   }
 }

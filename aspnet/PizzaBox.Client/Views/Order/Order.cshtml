@@ -1,10 +1,91 @@
 @model PizzaBox.Client.Models.OrderViewModel
 
-<form asp-action="post" asp-controller="user" asp-antiforgery="true" method="POST">
-  @foreach (var item in Model.StoreItems)
+<div class="text-center">
+  <h1 class="display-4">List of Orders</h1>
+  <p>Select what type of pizza to order from @Model.Store</p>
+  <form asp-controller="Order" asp-action="BuildPizza" asp-route-storeName="@Model.Store" asp-method="POST">
+    @foreach (var item in Model.StoreItems)
+    {
+      <div>
+        <input asp-for="Pizza" type="radio" value="@item">
+        <label asp-for="Pizza">@item</label>
+      </div>
+    }
+    <div>
+      <span>Sizes: </span>
+      @foreach (var item in Model.Sizes)
+      {
+        <input asp-for="Size" type="radio" value="@item">
+        <label asp-for="Size">@item</label>
+      }
+    </div>
+
+    @if (Model.Pizza != "Custom Pizza")
+    {
+      <div>
+        <span>Crusts: </span>
+        @foreach (var item in Model.Crusts)
+        {
+          <input asp-for="Crust" type="radio" value="@item">
+          <label asp-for="Crust">@item</label>
+        }
+      </div>
+      <div>
+        <span>Toppings: </span>
+        @foreach (var item in Model.ToppingsShown)
+        {
+          <input name="ToppingsPicked" type="checkbox" value="@item">
+          <label name="ToppingsPicked">@item</label>
+        }
+      </div>
+    }
+    <button type="submit" class="btn btn-primary" style="margin-bottom: 10px;">Add to Pizza to Order</button>
+  </form>
+
+  @if (Model.Pizzas != null)
   {
-    <input type="radio" asp-for="@Model.Store" value="@item">
-    <label for="@item">@item</label>
+    <table class="table" class="mt-2">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Size</th>
+          <th>Crust</th>
+          <th>Topping1</th>
+          <th>Topping2</th>
+          <th>Topping3</th>
+          <th>Topping4</th>
+          <th>Topping5</th>
+          <th>Cost</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        @foreach (var pizza in Model.Pizzas)
+        {
+          <tr>
+            <td>@pizza.Name</td>
+            <td>@pizza.Size</td>
+            <td> @pizza.Crust</td>
+            @if(pizza.ToppingList != null){
+              var i = 0;
+              @foreach (var topping in pizza.ToppingList)
+              {
+                i++;
+                <td>@topping</td>
+              }
+              @for(; i < 5; ++i){
+                <td></td>
+              }
+            } else {
+              @for(var i = 0; i < 5; ++i){
+                <td></td>
+              }
+            }
+            <td>$@pizza.Cost</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+    <button type="submit" class="btn btn-secondary">Checkout Order</button>
   }
-  <button type="submit">Add to order</button>
-</form>
+</div>

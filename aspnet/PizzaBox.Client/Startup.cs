@@ -22,7 +22,10 @@ namespace PizzaBox.Client
     {
       services.AddControllersWithViews();
       services.AddDbContext<PizzaBoxContext>(
-        options => options.UseSqlServer(Configuration.GetConnectionString("sqlserver"))
+        options => options.UseSqlServer(Configuration.GetConnectionString("sqlserver"), opts =>
+        {
+          opts.EnableRetryOnFailure(2);
+        })
       );
       services.AddScoped<PizzaBoxRepository>();
     }

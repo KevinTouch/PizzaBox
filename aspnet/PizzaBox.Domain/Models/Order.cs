@@ -1,12 +1,19 @@
 using System;
+using System.Collections.Generic;
 using PizzaBox.Domain.Abstracts;
 
 namespace PizzaBox.Domain.Models
 {
-  public class Order : AModel
+  public class Order : AEntity
   {
-    public Store Store { get; set; }
-    public long StoreEntityId { get; set; }
-    public DateTime DateModified { get; set; }
+    public List<APizzaModel> Pizzas { get; set; }
+
+    public DateTime OrderTime { get; set; }
+
+    public Order()
+    {
+      Pizzas = new List<APizzaModel>();
+      OrderTime = DateTime.Now;
+    }
   }
 }
