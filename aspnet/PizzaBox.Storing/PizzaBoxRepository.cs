@@ -23,6 +23,11 @@ namespace PizzaBox.Storing
       _ctx.SaveChanges();
     }
 
+    public IEnumerable<User> GetUsers(string storeName)
+    {
+      return _ctx.Users.Include(x => x.Orders).Where(u => u.SelectedStore.Name == storeName);
+    }
+
     public IEnumerable<Store> ReadStores()
     {
       return _ctx.Stores;
