@@ -2,7 +2,10 @@
 
 ## Project Description
 
-The goal of the project is to build a Pizza Ordering System.
+The goal of the project is to build a Pizza Ordering System using the .NET and the MVC design pattern.
+For data storage, I used Azure SQL database as well as the Entity Framework for importing C# migrations
+for my models. Also, I used xUnit testing for ensuring that all my domain models work properly and
+correctly binds the data to the view models.
 
 ## Technologies Used
 
@@ -32,9 +35,9 @@ To-do list:
 
 ## Getting Started
 
-git clone "https://github.com/KevinTouch/PizzaBox.git"
-cd aspnet
-dotnet run -p PizzaBox.Client
+* git clone "https://github.com/KevinTouch/PizzaBox.git"
+* cd aspnet
+* dotnet run -p PizzaBox.Client
 
 ## Contributors
 
